@@ -1,36 +1,29 @@
-# Ubwoko
+# KinGuide
 
-**Your family tree, checked against educational clinical-referral patterns.**
+**Family history → educational referral patterns → a conversation sheet for the clinic.**
 
-Ubwoko is an AUCA final-year style prototype: draw (or load) a family history, run deterministic guideline-inspired rules, and print a one-page conversation sheet for a clinician visit.
+KinGuide is an AUCA final-year style prototype: build a family tree, run deterministic guideline-inspired rules, and copy a one-page sheet to discuss with a clinician.
 
 It is **not a medical device**. It does not output risk percentages or diagnoses. Unknown facts stay unknown — they are never treated as “healthy.”
 
-## Why this project
+## Problem
 
-Family history is cheap screening input, but short appointments rarely leave time to walk a full tree. Ubwoko helps a patient or student arrive already knowing which **educational** patterns their family might meet, and what information is still missing.
+Family history is useful screening input, but short appointments rarely leave time to walk a full tree. People often do not know which relatives and ages matter.
 
-Inspired by the ideas behind KinTrace (DSH Hacks), rebuilt as an original product with a Rwanda / AUCA teaching framing.
-
-## Features
+## Solution
 
 - Family tree editor (relations, sex, living status, conditions, ages)
-- Three educational rule packs:
-  - Breast & ovarian family patterns
-  - Bowel cancer clustering
-  - Early heart disease / FH-style family history (shows when guidelines disagree on age cut-offs)
-- Findings: **meets** / **discuss** / **none**, with step-by-step yes/no/unknown
+- Three educational rule packs (breast/ovarian, bowel clustering, early heart / FH-style)
+- Findings: **meets** / **discuss** / **none**, with yes / no / unknown steps
 - “What we don’t know” panel
-- Copyable doctor conversation sheet
-- Fully client-side (no accounts, no API keys for the MVP)
+- Copyable clinician conversation sheet
+- Fully client-side (no accounts, no API keys in v1)
 
 ## Stack
 
-- React 19 + TypeScript + Vite
-- Vitest for rule tests
-- CSS (moss / clay visual system — no purple dashboard look)
+React 19 · TypeScript · Vite · Vitest · CSS
 
-## Run locally
+## Run
 
 ```bash
 npm install
@@ -42,31 +35,22 @@ npm test
 npm run build
 ```
 
-## How it is built (architecture)
+## Architecture
 
 ```
 src/
-  types.ts              # Person, Finding, Guideline contracts
-  tree.ts               # Relations, helpers, sample family, gaps
-  guidelines/
-    breastOvarian.ts    # Deterministic rules (teaching simplification)
-    colorectal.ts
-    heart.ts
-    index.ts            # evaluateAll()
-    guidelines.test.ts  # Unit tests for rule behaviour
-  report.ts             # Plain-text clinician sheet
-  App.tsx               # UI only — no medical decisions in components
-  styles.css
+  types.ts
+  tree.ts                 # relations, sample family, gaps
+  guidelines/*.ts         # only place decisions are made
+  report.ts               # clinician sheet
+  App.tsx                 # UI only
 ```
 
-**Design rule:** the UI never decides. Only pure functions in `guidelines/` return findings. That makes the thesis easy to defend: every result traces to a written step.
+**Rule:** the UI never decides. Pure functions return findings so every result can be defended in a thesis.
 
-## Ethics for your AUCA write-up
+## Ethics
 
-- Label every demo “educational / prototype”
-- Cite that real NICE / Amsterdam / FH tools are more complex than this MVP
-- Prefer clinician review of wording before any community pilot
-- Do not collect patient data on a server in v1
+Educational prototype. Real clinical guidelines are more complex. Do not collect patient data on a server in v1.
 
 ## License
 

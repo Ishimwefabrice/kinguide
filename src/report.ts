@@ -3,7 +3,7 @@ import type { Finding, Person } from "./types";
 
 export function buildReport(people: Person[], findings: Finding[]): string {
   const lines: string[] = [];
-  lines.push("UBWOKO — family history conversation sheet");
+  lines.push("KinGuide — family history conversation sheet");
   lines.push("Educational prototype. Not a medical device. Not a diagnosis.");
   lines.push(`Generated: ${new Date().toISOString().slice(0, 10)}`);
   lines.push("");

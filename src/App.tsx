@@ -73,7 +73,7 @@ export default function App() {
   return (
     <div className="app">
       <header className="hero">
-        <h1 className="brand">Ubwoko</h1>
+        <h1 className="brand">KinGuide</h1>
         <p className="tagline">
           Your family tree, checked against educational clinical-referral patterns —
           so you walk into the appointment knowing what to ask.
@@ -90,7 +90,7 @@ export default function App() {
           </button>
         </div>
         <div className="disclaimer">
-          Ubwoko is an AUCA teaching prototype inspired by family-history decision support.
+          KinGuide is an AUCA teaching prototype for family-history decision support.
           It is <strong>not</strong> a medical device, does not give risk percentages, and never
           replaces a clinician. Data stays in this browser only.
         </div>
@@ -257,7 +257,7 @@ export default function App() {
 
       <p className="footer-note">
         Built for an AUCA final-year portfolio. Sources are simplified teaching patterns, not hospital
-        protocol. Keep Ubwoko offline-first: no accounts, no server, no analytics in this MVP.
+        protocol. Keep KinGuide offline-first: no accounts, no server, no analytics in this MVP.
       </p>
     </div>
   );
