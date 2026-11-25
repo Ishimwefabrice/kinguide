@@ -1,9 +1,13 @@
-# Rwanda visual assets (KinGuide)
+# KinGuide visual assets (Rwanda + family)
 
-| File | Use |
+Images are chosen to match the product — family health history education in Rwanda — not generic travel stock.
+
+| File | Role |
 | --- | --- |
-| `hero-tea-hills.jpg` | **Primary / best** — welcome full-bleed + sidebar strip |
-| `panel-kigali.jpg` | Welcome side panel (modern Kigali-in-hills look) |
-| `hero-thousand-hills.jpg` | Alternate terraced hills (kept for future screens) |
+| `hero-family-hills.jpg` | **Primary** — multigenerational family on tea hills (welcome, shell, dashboard) |
+| `panel-family-story.jpg` | Welcome side panel — family conversation / health story |
+| `hero-tea-hills.jpg` | Landscape alternate (kept for atmosphere) |
+| `hero-thousand-hills.jpg` | Terraced hills alternate |
+| `panel-kigali.jpg` | Kigali city alternate |
 
-Generated for KinGuide branding as Rwanda-inspired prototype imagery (tea hills / thousand hills / Kigali). Replace with licensed photography before commercial launch if required.
+Prototype branding assets. Replace with licensed photography before commercial launch if required.

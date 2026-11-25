@@ -3,9 +3,9 @@ import { HeartHandshake, Lock, Sparkles } from "lucide-react";
 import { useWorkspace } from "@/store/workspace";
 import { db } from "@/database/db";
 
-/** Best hero: Rwanda tea hills — matches KinGuide green identity. */
-const HERO = "/images/rwanda/hero-tea-hills.jpg";
-const PANEL = "/images/rwanda/panel-kigali.jpg";
+/** Project-matched visuals: Rwandan family + hills (KinGuide story). */
+const HERO = "/images/rwanda/hero-family-hills.jpg";
+const PANEL = "/images/rwanda/panel-family-story.jpg";
 
 export function WelcomePage() {
   const { loadSample, refresh } = useWorkspace();
@@ -87,11 +87,11 @@ export function WelcomePage() {
               <div className="relative flex h-full flex-col justify-end p-8 text-white">
                 <HeartHandshake className="h-9 w-9 text-kg-gold" />
                 <h2 className="font-display mt-4 text-2xl font-semibold">
-                  From the land of a thousand hills
+                  Family stories across generations
                 </h2>
                 <p className="mt-2 text-sm leading-relaxed text-white/80">
-                  Tea hills and Kigali on the horizon — a quiet Rwandan identity for a serious health
-                  education product.
+                  KinGuide helps Rwandan families organise health history — calmly, privately, and
+                  ready for a better conversation with a clinician.
                 </p>
                 <ul className="mt-5 space-y-2 text-sm text-white/85">
                   <li className="rounded-xl bg-white/10 px-3 py-2 backdrop-blur-sm">Visual family tree</li>
@@ -107,7 +107,7 @@ export function WelcomePage() {
           </div>
         </div>
         <p className="mt-4 text-center text-[11px] text-white/70">
-          Visuals: Rwanda-inspired landscapes for KinGuide branding (prototype assets).
+          Visuals: Rwandan family + thousand hills — made to match KinGuide (prototype assets).
         </p>
       </div>
     </div>

@@ -85,7 +85,7 @@ export function AppShell() {
           <div className="mx-3 mb-5 overflow-hidden rounded-2xl border border-white/10">
             <div
               className="h-16 bg-cover bg-center"
-              style={{ backgroundImage: "url(/images/rwanda/hero-tea-hills.jpg)" }}
+              style={{ backgroundImage: "url(/images/rwanda/hero-family-hills.jpg)" }}
               aria-hidden
             />
             <div className="bg-white/5 px-3 py-3 text-xs text-white/70">
