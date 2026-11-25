@@ -82,12 +82,19 @@ export function AppShell() {
             ))}
           </nav>
 
-          <div className="mx-3 mb-5 rounded-2xl border border-white/10 bg-white/5 px-3 py-3 text-xs text-white/70">
-            <div className="mb-1 flex items-center gap-1.5 font-semibold text-kg-gold">
-              <ShieldCheck className="h-3.5 w-3.5" />
-              Educational use
+          <div className="mx-3 mb-5 overflow-hidden rounded-2xl border border-white/10">
+            <div
+              className="h-16 bg-cover bg-center"
+              style={{ backgroundImage: "url(/images/rwanda/hero-tea-hills.jpg)" }}
+              aria-hidden
+            />
+            <div className="bg-white/5 px-3 py-3 text-xs text-white/70">
+              <div className="mb-1 flex items-center gap-1.5 font-semibold text-kg-gold">
+                <ShieldCheck className="h-3.5 w-3.5" />
+                Educational use · Rwanda
+              </div>
+              Not a medical device. Data stays on this device.
             </div>
-            Not a medical device. Data stays on this device.
           </div>
         </div>
       </aside>

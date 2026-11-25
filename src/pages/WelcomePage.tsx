@@ -3,6 +3,10 @@ import { HeartHandshake, Lock, Sparkles } from "lucide-react";
 import { useWorkspace } from "@/store/workspace";
 import { db } from "@/database/db";
 
+/** Best hero: Rwanda tea hills — matches KinGuide green identity. */
+const HERO = "/images/rwanda/hero-tea-hills.jpg";
+const PANEL = "/images/rwanda/panel-kigali.jpg";
+
 export function WelcomePage() {
   const { loadSample, refresh } = useWorkspace();
 
@@ -19,26 +23,32 @@ export function WelcomePage() {
 
   return (
     <div className="relative min-h-screen overflow-hidden">
-      <div className="pointer-events-none absolute inset-0 pattern-hills" />
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 pattern-imigongo opacity-60" />
+      {/* Full-bleed Rwanda hero */}
+      <div
+        className="pointer-events-none absolute inset-0 bg-cover bg-center"
+        style={{ backgroundImage: `url(${HERO})` }}
+        aria-hidden
+      />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-kg-forest/85 via-kg-forest/70 to-kg-navy/75" />
+      <div className="pointer-events-none absolute inset-0 pattern-imigongo opacity-30" />
 
       <div className="relative mx-auto flex min-h-screen max-w-5xl flex-col justify-center px-4 py-12 sm:px-8">
-        <div className="surface overflow-hidden">
-          <div className="grid lg:grid-cols-[1.2fr_0.8fr]">
+        <div className="surface overflow-hidden shadow-[var(--shadow-lift)]">
+          <div className="grid lg:grid-cols-[1.15fr_0.85fr]">
             <div className="p-8 sm:p-10 lg:p-12">
               <div className="inline-flex items-center gap-2 rounded-full bg-kg-mint px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-kg-green">
                 <span className="h-1.5 w-1.5 rounded-full bg-kg-gold" />
-                KinGuide
+                KinGuide · Rwanda
               </div>
               <h1 className="font-display mt-5 text-4xl font-bold leading-[1.1] text-kg-ink sm:text-5xl">
                 Understand your family&apos;s health story.
               </h1>
               <p className="mt-4 max-w-xl text-base leading-relaxed text-kg-muted sm:text-lg">
-                Build your family medical history, explore documented educational patterns, and
-                prepare meaningful conversations with healthcare professionals.
+                Built in Rwanda for calm, clear conversations — organise family medical history and
+                prepare meaningful questions for healthcare professionals.
               </p>
 
-              <div className="mt-6 space-y-3 rounded-2xl border border-kg-border bg-kg-mint/60 px-4 py-4 text-sm text-kg-ink">
+              <div className="mt-6 space-y-3 rounded-2xl border border-kg-border bg-kg-mint/70 px-4 py-4 text-sm text-kg-ink">
                 <p className="flex gap-2">
                   <Sparkles className="mt-0.5 h-4 w-4 shrink-0 text-kg-green" />
                   <span>
@@ -68,28 +78,37 @@ export function WelcomePage() {
               </div>
             </div>
 
-            <div className="relative hidden overflow-hidden bg-kg-forest p-8 text-white lg:block">
-              <div className="absolute inset-0 pattern-imigongo opacity-40" />
-              <div className="relative flex h-full flex-col justify-between">
-                <div>
-                  <HeartHandshake className="h-10 w-10 text-kg-gold" />
-                  <h2 className="font-display mt-6 text-2xl font-semibold">
-                    Built for calm, clear conversations
-                  </h2>
-                  <p className="mt-3 text-sm leading-relaxed text-white/75">
-                    A subtle Rwanda-inspired identity — green hills, gold accents, and clean clinical
-                    navy — without noise or dashboard clutter.
-                  </p>
-                </div>
-                <ul className="space-y-3 text-sm text-white/80">
-                  <li className="rounded-xl bg-white/10 px-3 py-2">Visual family tree</li>
-                  <li className="rounded-xl bg-white/10 px-3 py-2">Explainable educational findings</li>
-                  <li className="rounded-xl bg-white/10 px-3 py-2">Clinician conversation sheet</li>
+            <div className="relative hidden min-h-[420px] overflow-hidden lg:block">
+              <div
+                className="absolute inset-0 bg-cover bg-center"
+                style={{ backgroundImage: `url(${PANEL})` }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-kg-forest/90 via-kg-forest/45 to-transparent" />
+              <div className="relative flex h-full flex-col justify-end p-8 text-white">
+                <HeartHandshake className="h-9 w-9 text-kg-gold" />
+                <h2 className="font-display mt-4 text-2xl font-semibold">
+                  From the land of a thousand hills
+                </h2>
+                <p className="mt-2 text-sm leading-relaxed text-white/80">
+                  Tea hills and Kigali on the horizon — a quiet Rwandan identity for a serious health
+                  education product.
+                </p>
+                <ul className="mt-5 space-y-2 text-sm text-white/85">
+                  <li className="rounded-xl bg-white/10 px-3 py-2 backdrop-blur-sm">Visual family tree</li>
+                  <li className="rounded-xl bg-white/10 px-3 py-2 backdrop-blur-sm">
+                    Explainable educational findings
+                  </li>
+                  <li className="rounded-xl bg-white/10 px-3 py-2 backdrop-blur-sm">
+                    Clinician conversation sheet
+                  </li>
                 </ul>
               </div>
             </div>
           </div>
         </div>
+        <p className="mt-4 text-center text-[11px] text-white/70">
+          Visuals: Rwanda-inspired landscapes for KinGuide branding (prototype assets).
+        </p>
       </div>
     </div>
   );

@@ -28,6 +28,20 @@ export function DashboardPage() {
 
   return (
     <div className="page-enter space-y-8">
+      <div className="surface mb-6 overflow-hidden">
+        <div
+          className="relative h-28 bg-cover bg-center sm:h-36"
+          style={{ backgroundImage: "url(/images/rwanda/hero-tea-hills.jpg)" }}
+        >
+          <div className="absolute inset-0 bg-gradient-to-r from-kg-forest/80 to-kg-forest/25" />
+          <div className="relative flex h-full items-end p-5">
+            <p className="font-display text-lg font-semibold text-white sm:text-xl">
+              KinGuide · Land of a thousand hills
+            </p>
+          </div>
+        </div>
+      </div>
+
       <PageHeader
         title="Dashboard"
         subtitle="Live counts from your local KinGuide workspace."
