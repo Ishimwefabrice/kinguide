@@ -1,4 +1,7 @@
 import { Link } from "react-router-dom";
+import { AlertCircle } from "lucide-react";
+import { EmptyState } from "@/components/ui/EmptyState";
+import { PageHeader } from "@/components/ui/PageHeader";
 import { computeMissing } from "@/services/missing";
 import { useWorkspace } from "@/store/workspace";
 
@@ -7,31 +10,35 @@ export function MissingPage() {
   const items = computeMissing(persons, history);
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="font-display text-3xl text-navy-950">Missing information</h1>
-        <p className="mt-1 text-slate-600">
-          Unknown stays unknown. KinGuide never converts missing facts into “no disease.”
-        </p>
-      </div>
+    <div className="page-enter space-y-6">
+      <PageHeader
+        title="Missing information"
+        subtitle="Unknown stays unknown. KinGuide never converts missing facts into “no disease.”"
+      />
       {items.length === 0 ? (
-        <p className="border border-dashed border-slate-300 bg-white px-4 py-6 text-slate-500">
-          No gaps flagged from current data.
-        </p>
+        <EmptyState
+          icon={AlertCircle}
+          title="No gaps flagged"
+          description="Current data does not show incomplete fields that affect the demonstration rules."
+        />
       ) : (
         <div className="space-y-3">
           {items.map((item) => (
-            <div key={item.id} className="border border-slate-200 bg-white px-4 py-3">
+            <div key={item.id} className="surface px-4 py-4">
               <div className="flex flex-wrap items-center gap-2">
-                <span className="text-xs font-bold uppercase tracking-wide text-slate-500">
+                <span
+                  className={`rounded-full px-2 py-0.5 text-[11px] font-bold uppercase ${
+                    item.required ? "bg-[#fff6db] text-[#8a5b00]" : "bg-kg-mint text-kg-forest"
+                  }`}
+                >
                   {item.required ? "Needed for demo rules" : "Optional"}
                 </span>
-                <span className="font-semibold text-navy-900">{item.personName}</span>
+                <span className="font-display font-semibold text-kg-ink">{item.personName}</span>
               </div>
-              <p className="mt-1 text-sm text-slate-800">{item.what}</p>
-              <p className="mt-1 text-sm text-slate-500">{item.why}</p>
+              <p className="mt-2 text-sm text-kg-ink">{item.what}</p>
+              <p className="mt-1 text-sm text-kg-muted">{item.why}</p>
               {item.personId ? (
-                <Link className="mt-2 inline-block text-sm font-semibold text-teal-700 underline" to="/members">
+                <Link className="mt-3 inline-flex text-sm font-semibold text-kg-green hover:underline" to="/members">
                   Update family members
                 </Link>
               ) : null}

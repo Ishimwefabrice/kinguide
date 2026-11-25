@@ -1,4 +1,6 @@
 import { useMemo } from "react";
+import { Copy, Printer } from "lucide-react";
+import { PageHeader } from "@/components/ui/PageHeader";
 import { conditionLabel } from "@/data/conditions";
 import { computeMissing } from "@/services/missing";
 import { useWorkspace } from "@/store/workspace";
@@ -55,20 +57,26 @@ export function ReportsPage() {
   }, [persons, history, missing, rows]);
 
   return (
-    <div className="space-y-6">
+    <div className="page-enter space-y-6">
       <div className="no-print">
-        <h1 className="font-display text-3xl text-navy-950">Reports</h1>
-        <p className="mt-1 text-slate-600">Preview, copy, or print a conversation sheet.</p>
-        <div className="mt-4 flex flex-wrap gap-2">
-          <button type="button" className="btn-primary" onClick={() => void navigator.clipboard.writeText(text)}>
-            Copy report
-          </button>
-          <button type="button" className="btn-secondary" onClick={() => window.print()}>
-            Print
-          </button>
-        </div>
+        <PageHeader
+          title="Reports"
+          subtitle="Preview, copy, or print a calm conversation sheet for clinic."
+          actions={
+            <>
+              <button type="button" className="btn-primary" onClick={() => void navigator.clipboard.writeText(text)}>
+                <Copy className="h-4 w-4" />
+                Copy report
+              </button>
+              <button type="button" className="btn-secondary" onClick={() => window.print()}>
+                <Printer className="h-4 w-4" />
+                Print
+              </button>
+            </>
+          }
+        />
       </div>
-      <pre className="overflow-auto border border-slate-200 bg-navy-950 p-4 text-xs leading-relaxed text-teal-50 whitespace-pre-wrap">
+      <pre className="surface overflow-auto bg-kg-forest p-5 text-xs leading-relaxed text-kg-mint whitespace-pre-wrap sm:text-[13px]">
         {text}
       </pre>
     </div>

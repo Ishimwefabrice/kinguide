@@ -1,3 +1,4 @@
+import { PageHeader } from "@/components/ui/PageHeader";
 import { activeRules } from "@/engine/rule-registry";
 import { computeMissing } from "@/services/missing";
 import { useWorkspace } from "@/store/workspace";
@@ -7,34 +8,37 @@ export function AssessmentsPage() {
   const missing = computeMissing(persons, history).filter((m) => m.required);
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="font-display text-3xl text-navy-950">Assessments</h1>
-        <p className="mt-1 text-slate-600">
-          Runs the deterministic demonstration rule pack. Clinical registry is empty until reviewed.
-        </p>
+    <div className="page-enter space-y-6">
+      <PageHeader
+        title="Assessments"
+        subtitle="Runs the deterministic demonstration rule pack. Clinical registry stays empty until reviewed."
+        actions={
+          <button type="button" className="btn-primary" onClick={() => void assess()} disabled={persons.length === 0}>
+            Start assessment
+          </button>
+        }
+      />
+
+      <div className="rounded-2xl border border-[#f2c94c]/50 bg-[#fff9e8] px-4 py-3 text-sm text-[#6b4b00]">
+        Active rules are labelled <strong>demonstration / NON-CLINICAL</strong>. They prove the engine —
+        they do not guide care.
       </div>
 
-      <div className="border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-950">
-        Active rules are labelled <strong>demonstration / NON-CLINICAL</strong>. They exist to prove the
-        engine — not to guide care.
-      </div>
-
-      <div className="border border-slate-200 bg-white p-4">
-        <h2 className="font-display text-lg">Active rules</h2>
-        <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-slate-700">
+      <div className="surface p-5">
+        <h2 className="font-display text-lg font-semibold text-kg-ink">Active rules</h2>
+        <ul className="mt-3 space-y-2">
           {activeRules().map((r) => (
-            <li key={r.id}>
-              {r.name} · v{r.version} · {r.reviewStatus}
+            <li key={r.id} className="rounded-xl border border-kg-border bg-kg-bg/60 px-3 py-2 text-sm text-kg-ink">
+              {r.name} · v{r.version} · <span className="text-kg-muted">{r.reviewStatus}</span>
             </li>
           ))}
         </ul>
       </div>
 
       {missing.length > 0 ? (
-        <div className="border border-slate-200 bg-white p-4 text-sm">
-          <h2 className="font-semibold text-navy-900">Missing evidence that may affect demo rules</h2>
-          <ul className="mt-2 list-disc pl-5 text-slate-600">
+        <div className="surface p-5 text-sm">
+          <h2 className="font-display font-semibold text-kg-ink">Missing evidence that may affect demo rules</h2>
+          <ul className="mt-2 list-disc space-y-1 pl-5 text-kg-muted">
             {missing.map((m) => (
               <li key={m.id}>{m.personName}: {m.what}</li>
             ))}
@@ -42,15 +46,11 @@ export function AssessmentsPage() {
         </div>
       ) : null}
 
-      <button type="button" className="btn-primary" onClick={() => void assess()} disabled={persons.length === 0}>
-        Start assessment
-      </button>
-
-      <div className="space-y-2">
+      <div className="space-y-3">
         {assessments.map((a) => (
-          <div key={a.id} className="border border-slate-200 bg-white px-4 py-3 text-sm">
-            <div className="font-semibold text-navy-900">{new Date(a.createdAt).toLocaleString()}</div>
-            <div className="text-slate-500">
+          <div key={a.id} className="surface px-4 py-3.5 text-sm">
+            <div className="font-display font-semibold text-kg-ink">{new Date(a.createdAt).toLocaleString()}</div>
+            <div className="mt-1 text-kg-muted">
               {a.ruleSetVersion} · {a.outdated ? "OUTDATED after data change" : "CURRENT"} ·{" "}
               {a.findingIds.length} findings
             </div>

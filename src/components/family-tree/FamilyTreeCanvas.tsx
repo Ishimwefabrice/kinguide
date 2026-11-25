@@ -8,16 +8,30 @@ import {
   type Node,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
+import { Users } from "lucide-react";
+import { EmptyState } from "@/components/ui/EmptyState";
 import { useWorkspace } from "@/store/workspace";
 import { conditionLabel } from "@/data/conditions";
+import { PersonNode, type PersonNodeData } from "./PersonNode";
+
+const nodeTypes = { person: PersonNode };
+
+function generationOf(role: string): PersonNodeData["generation"] {
+  if (role.includes("grand")) return "ancestors";
+  if (role === "mother" || role === "father" || role.includes("aunt") || role.includes("uncle"))
+    return "parents";
+  if (role === "self" || role === "sister" || role === "brother" || role === "spouse") return "self";
+  if (role === "daughter" || role === "son") return "children";
+  return "other";
+}
 
 function layoutY(role: string): number {
-  if (role.includes("grand")) return 0;
-  if (role === "mother" || role === "father" || role.includes("aunt") || role.includes("uncle"))
-    return 160;
-  if (role === "self" || role === "sister" || role === "brother" || role === "spouse") return 320;
-  if (role === "daughter" || role === "son") return 480;
-  return 320;
+  const gen = generationOf(role);
+  if (gen === "ancestors") return 0;
+  if (gen === "parents") return 180;
+  if (gen === "self") return 360;
+  if (gen === "children") return 540;
+  return 360;
 }
 
 export function FamilyTreeCanvas() {
@@ -32,32 +46,18 @@ export function FamilyTreeCanvas() {
         .filter((h) => h.personId === p.id)
         .map((h) => conditionLabel(h.conditionId))
         .slice(0, 2);
+      const data: PersonNodeData = {
+        name: `${p.firstName} ${p.lastName}`.trim(),
+        relation: p.relationHint.replaceAll("_", " "),
+        age: p.approximateAge,
+        conditions,
+        generation: generationOf(p.relationHint),
+      };
       return {
         id: p.id,
-        position: { x: 80 + count * 220, y: layoutY(p.relationHint) },
-        data: {
-          label: (
-            <div className="min-w-[140px] text-left">
-              <div className="font-semibold text-navy-900">
-                {p.firstName} {p.lastName}
-              </div>
-              <div className="text-xs text-slate-500">{p.relationHint.replaceAll("_", " ")}</div>
-              {p.approximateAge != null ? (
-                <div className="text-xs text-slate-500">Age ~{p.approximateAge}</div>
-              ) : null}
-              {conditions.length ? (
-                <div className="mt-1 text-[11px] text-teal-700">{conditions.join(" · ")}</div>
-              ) : null}
-            </div>
-          ),
-        },
-        style: {
-          border: "1px solid #cbd5e1",
-          borderRadius: 4,
-          padding: 10,
-          background: "#fff",
-          fontSize: 12,
-        },
+        type: "person",
+        position: { x: 60 + count * 230, y: layoutY(p.relationHint) },
+        data,
       };
     });
 
@@ -68,6 +68,11 @@ export function FamilyTreeCanvas() {
       label: r.type === "parent_of" ? "parent" : "spouse",
       type: "smoothstep",
       animated: r.type === "spouse_of",
+      style: {
+        stroke: r.type === "spouse_of" ? "#F2C94C" : "#0B6B53",
+        strokeWidth: 1.6,
+      },
+      labelStyle: { fill: "#718096", fontSize: 10, fontWeight: 600 },
     }));
 
     return { nodes, edges };
@@ -75,19 +80,51 @@ export function FamilyTreeCanvas() {
 
   if (persons.length === 0) {
     return (
-      <div className="flex h-[420px] items-center justify-center border border-dashed border-slate-300 bg-white text-slate-500">
-        Add family members to see the tree.
-      </div>
+      <EmptyState
+        icon={Users}
+        title="Your tree is empty"
+        description="Add family members to see generations laid out visually."
+      />
     );
   }
 
   return (
-    <div className="h-[520px] border border-slate-200 bg-white">
-      <ReactFlow nodes={nodes} edges={edges} fitView proOptions={{ hideAttribution: true }}>
-        <Background gap={18} size={1} />
-        <Controls />
-        <MiniMap pannable zoomable />
-      </ReactFlow>
+    <div className="surface h-[560px] overflow-hidden">
+      <div className="flex flex-wrap items-center gap-3 border-b border-kg-border px-4 py-3 text-xs text-kg-muted">
+        <span className="font-semibold text-kg-ink">Generations</span>
+        <span className="inline-flex items-center gap-1.5">
+          <i className="h-2.5 w-2.5 rounded-full bg-kg-navy" /> Ancestors
+        </span>
+        <span className="inline-flex items-center gap-1.5">
+          <i className="h-2.5 w-2.5 rounded-full bg-kg-green" /> Parents / aunts · uncles
+        </span>
+        <span className="inline-flex items-center gap-1.5">
+          <i className="h-2.5 w-2.5 rounded-full bg-kg-gold" /> You / siblings
+        </span>
+        <span className="inline-flex items-center gap-1.5">
+          <i className="h-2.5 w-2.5 rounded-full bg-[#3d7ea6]" /> Children
+        </span>
+      </div>
+      <div className="h-[calc(560px-49px)]">
+        <ReactFlow
+          nodes={nodes}
+          edges={edges}
+          nodeTypes={nodeTypes}
+          fitView
+          minZoom={0.4}
+          proOptions={{ hideAttribution: true }}
+        >
+          <Background gap={20} size={1} color="#E2EAE7" />
+          <Controls showInteractive={false} />
+          <MiniMap
+            pannable
+            zoomable
+            nodeColor="#0B6B53"
+            maskColor="rgba(246,249,248,0.75)"
+            style={{ borderRadius: 12, border: "1px solid #E2EAE7" }}
+          />
+        </ReactFlow>
+      </div>
     </div>
   );
 }

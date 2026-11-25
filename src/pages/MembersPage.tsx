@@ -1,4 +1,7 @@
 import { useState, type FormEvent } from "react";
+import { Users } from "lucide-react";
+import { EmptyState } from "@/components/ui/EmptyState";
+import { PageHeader } from "@/components/ui/PageHeader";
 import { deletePerson, upsertPerson } from "@/database/repositories";
 import { newId } from "@/lib/utils";
 import { useWorkspace } from "@/store/workspace";
@@ -62,48 +65,48 @@ export function MembersPage() {
   }
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="font-display text-3xl text-navy-950">Family members</h1>
-        <p className="mt-1 text-slate-600">Add people without forcing facts you do not know.</p>
-      </div>
+    <div className="page-enter space-y-6">
+      <PageHeader
+        title="Family members"
+        subtitle="Add people without forcing facts you do not know."
+      />
 
-      <form onSubmit={(e) => void onSubmit(e)} className="grid gap-3 border border-slate-200 bg-white p-4 sm:grid-cols-2">
-        <label className="text-sm font-semibold">
+      <form onSubmit={(e) => void onSubmit(e)} className="surface grid gap-4 p-5 sm:grid-cols-2">
+        <label className="text-sm font-semibold text-kg-ink">
           First name
-          <input className="mt-1 w-full border border-slate-300 px-3 py-2" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
+          <input className="field" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
         </label>
-        <label className="text-sm font-semibold">
+        <label className="text-sm font-semibold text-kg-ink">
           Last name
-          <input className="mt-1 w-full border border-slate-300 px-3 py-2" value={lastName} onChange={(e) => setLastName(e.target.value)} />
+          <input className="field" value={lastName} onChange={(e) => setLastName(e.target.value)} />
         </label>
-        <label className="text-sm font-semibold">
+        <label className="text-sm font-semibold text-kg-ink">
           Relation hint
-          <select className="mt-1 w-full border border-slate-300 px-3 py-2" value={relationHint} onChange={(e) => setRelationHint(e.target.value as RelationRole)}>
+          <select className="field" value={relationHint} onChange={(e) => setRelationHint(e.target.value as RelationRole)}>
             {ROLES.map((r) => (
               <option key={r} value={r}>{r.replaceAll("_", " ")}</option>
             ))}
           </select>
         </label>
-        <label className="text-sm font-semibold">
+        <label className="text-sm font-semibold text-kg-ink">
           Sex
-          <select className="mt-1 w-full border border-slate-300 px-3 py-2" value={sex} onChange={(e) => setSex(e.target.value as Sex)}>
+          <select className="field" value={sex} onChange={(e) => setSex(e.target.value as Sex)}>
             <option value="female">Female</option>
             <option value="male">Male</option>
             <option value="unknown">Unknown</option>
           </select>
         </label>
-        <label className="text-sm font-semibold">
+        <label className="text-sm font-semibold text-kg-ink">
           Living status
-          <select className="mt-1 w-full border border-slate-300 px-3 py-2" value={livingStatus} onChange={(e) => setLivingStatus(e.target.value as LivingStatus)}>
+          <select className="field" value={livingStatus} onChange={(e) => setLivingStatus(e.target.value as LivingStatus)}>
             <option value="alive">Alive</option>
             <option value="deceased">Deceased</option>
             <option value="unknown">Unknown</option>
           </select>
         </label>
-        <label className="text-sm font-semibold">
+        <label className="text-sm font-semibold text-kg-ink">
           Approximate age (optional)
-          <input className="mt-1 w-full border border-slate-300 px-3 py-2" inputMode="numeric" value={approximateAge} onChange={(e) => setApproximateAge(e.target.value.replace(/[^\d]/g, ""))} />
+          <input className="field" inputMode="numeric" value={approximateAge} onChange={(e) => setApproximateAge(e.target.value.replace(/[^\d]/g, ""))} />
         </label>
         {error ? <p className="text-sm text-red-700 sm:col-span-2">{error}</p> : null}
         <div className="sm:col-span-2">
@@ -111,30 +114,34 @@ export function MembersPage() {
         </div>
       </form>
 
-      <div className="space-y-2">
-        {persons.map((p) => (
-          <div key={p.id} className="flex flex-wrap items-center justify-between gap-3 border border-slate-200 bg-white px-4 py-3">
-            <div>
-              <div className="font-semibold text-navy-900">{p.firstName} {p.lastName}</div>
-              <div className="text-sm text-slate-500">
-                {p.relationHint.replaceAll("_", " ")} · {p.sex} · {p.livingStatus}
-                {p.approximateAge != null ? ` · ~${p.approximateAge}` : ""}
+      {persons.length === 0 ? (
+        <EmptyState icon={Users} title="No members yet" description="Use the form above to add the first person on your tree." />
+      ) : (
+        <div className="space-y-3">
+          {persons.map((p) => (
+            <div key={p.id} className="surface flex flex-wrap items-center justify-between gap-3 px-4 py-3.5 transition hover:shadow-[var(--shadow-lift)]">
+              <div>
+                <div className="font-display font-semibold text-kg-ink">{p.firstName} {p.lastName}</div>
+                <div className="text-sm text-kg-muted">
+                  {p.relationHint.replaceAll("_", " ")} · {p.sex} · {p.livingStatus}
+                  {p.approximateAge != null ? ` · ~${p.approximateAge}` : ""}
+                </div>
               </div>
+              <button
+                type="button"
+                className="btn-danger"
+                onClick={() => {
+                  if (confirm(`Remove ${p.firstName}?`)) {
+                    void deletePerson(p.id).then(() => refresh());
+                  }
+                }}
+              >
+                Delete
+              </button>
             </div>
-            <button
-              type="button"
-              className="btn-danger"
-              onClick={() => {
-                if (confirm(`Remove ${p.firstName}?`)) {
-                  void deletePerson(p.id).then(() => refresh());
-                }
-              }}
-            >
-              Delete
-            </button>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
